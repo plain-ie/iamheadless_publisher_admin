@@ -1,0 +1,28 @@
+{% load i18n %}
+
+{% translate 'next' as TEXT_NEXT %}
+{% translate 'previous' as TEXT_PREVIOUS %}
+
+<div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+        {% if PREVIOUS_URL is not None %}
+            <a href="{{ PREVIOUS_URL }}" role="button">
+                <span class="sr-only">{{ TEXT_PREVIOUS|capfirst }}</span>
+                <span class="hidden-xs" aria-hidden>{{ TEXT_PREVIOUS|capfirst }}</span>
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+        {% endif %}
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-center">
+        {{ PAGE }} / {{ PAGES }}
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+        {% if NEXT_URL is not None %}
+            <a href="{{ NEXT_URL }}" role="button">
+                <span class="sr-only">{{ TEXT_NEXT|capfirst }}</span>
+                <span class="hidden-xs" aria-hidden>{{ TEXT_NEXT|capfirst }}</span>
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        {% endif %}
+    </div>
+</div>

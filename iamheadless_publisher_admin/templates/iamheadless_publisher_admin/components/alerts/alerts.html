@@ -1,0 +1,3 @@
+{% for message in MESSAGES %}
+    {% include 'iamheadless_publisher_admin/components/alerts/alert.html' with MESSAGE=message TAG=message.tags %}
+{% endfor %}

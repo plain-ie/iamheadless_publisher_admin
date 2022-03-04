@@ -1,0 +1,7 @@
+{{ FORM.non_field_errors }}
+{% for field in FORM.hidden_fields %}
+    {{ field }}
+{% endfor %}
+{% for field in FORM.visible_fields %}
+    {% include 'iamheadless_publisher_admin/components/field.html' with FIELD=field %}
+{% endfor %}

@@ -1,0 +1,21 @@
+<div class="iamheadless-publisher-admin-formset-form">
+    {{ FORM.non_field_errors }}
+    {% for field in FORM.hidden_fields %}
+        {{ field }}
+    {% endfor %}
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="input-group">
+                    <input type="text" class="form-control input-lg" value="{{ FORM.title.value }}" disabled />
+                    <span class="input-group-btn">
+                        <a class="btn btn-default btn-lg iamheadless-publisher-admin-formset-trigger-remove-form" type="button">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            <span class="sr-only">Remove</span>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

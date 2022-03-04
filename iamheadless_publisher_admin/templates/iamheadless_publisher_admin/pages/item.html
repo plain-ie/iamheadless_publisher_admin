@@ -1,0 +1,109 @@
+{% extends 'iamheadless_publisher_admin/base.html' %}
+
+{% load i18n %}
+{% load iamheadless_publisher_admin_tags %}
+{% load static %}
+
+{% block content %}
+
+    {% translate 'add new' as TEXT_ADD_NEW %}
+    {% translate 'cancel' as TEXT_CANCEL %}
+    {% translate 'create' as TEXT_CREATE %}
+    {% translate 'create new item' as TEXT_CREATE_NEW_ITEM %}
+    {% translate 'created at' as TEXT_CREATED_AT %}
+    {% translate 'delete' as TEXT_DELETE %}
+    {% translate 'last updated at' as TEXT_LAST_UPDATED_AT %}
+    {% translate 'preview' as TEXT_PREVIEW %}
+    {% translate 'tenant' as TEXT_TENANT %}
+    {% translate 'update' as TEXT_UPDATE %}
+
+    {% setting 'URLNAME_ITEM_DELETE' as URLNAME_ITEM_DELETE %}
+    {% setting 'URLNAME_ITEM_CREATE_STEP_THREE' as URLNAME_ITEM_CREATE_STEP_THREE %}
+    {% setting 'URLNAME_ITEMS' as URLNAME_ITEMS %}
+
+    {% url URLNAME_ITEMS project_id=request_kwargs.project_id as URL_ITEMS_LIST %}
+
+    <div class="container-fluid iamheadless-publisher-admin-jumboheader margin-bottom-lg">
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        {% include 'iamheadless_publisher_admin/components/headings/default.html' with TITLE=page.title SUBTITLE=page.sub_title %}
+                        <ul class="condensed">
+                            {% if tenant|default:None is not None %}
+                                <li>{{ TEXT_TENANT|capfirst }}: {{ tenant.name }}</li>
+                            {% endif %}
+                            {% if request_kwargs.item_id|default:None is not None %}
+                                {% if data.created_at|default:None is not None %}
+                                    <li>{{ TEXT_CREATED_AT|capfirst }}: {{ data.created_at|date:'d/m/Y H:i' }}</li>
+                                {% endif %}
+                                {% if data.updated_at|default:None is not None %}
+                                    <li>{{ TEXT_LAST_UPDATED_AT|capfirst }}: {{ data.updated_at|date:'d/m/Y H:i' }}</li>
+                                {% endif %}
+                            {% endif %}
+                        </ul>
+                        <div class="row margin-bottom-lg hidden-lg hidden-md hidden-sm"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        {% if request_kwargs.item_id|default:None is not None %}
+                            <ul class="text-right">
+                                <li><a href="{{ urls.create }}">{{ TEXT_CREATE_NEW_ITEM|capfirst }}</a></li>
+                                <li><a href="{{ urls.preview }}">{{ TEXT_PREVIEW|capfirst }}</a></li>
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+        <div class="container margin-bottom-lg">
+            {% include 'iamheadless_publisher_admin/components/alerts/alerts.html' with MESSAGES=messages %}
+        </div>
+    {% endif %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <form action="{{ request.path }}" method="POST" class="iamheadless-publisher-admin-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form_html }}
+                    <div class="form-group">
+                        {% if request_kwargs.item_id|default:None is not None %}
+                            <button class="btn btn-success btn-lg pull-right iamheadless-publisher-admin-form-submit">{{ TEXT_UPDATE|capfirst }}</button>
+                            <a href="{{ urls.delete }}" class="btn btn-danger btn-lg">{{ TEXT_DELETE|capfirst }}</a>
+                        {% else %}
+                            <button class="btn btn-success btn-lg pull-right iamheadless-publisher-admin-form-submit">{{ TEXT_CREATE|capfirst }}</button>
+                            <a href="{{ URL_ITEMS_LIST }}" class="btn btn-danger btn-lg">{{ TEXT_CANCEL|capfirst }}</a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+    <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/languages.js' %}?build_id={% build_id %}"></script>
+    <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/formset_app.js' %}?build_id={% build_id %}"></script>
+    <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/formset_app_languages.js' %}?build_id={% build_id %}"></script>
+    <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/formset_app_relations.js' %}?build_id={% build_id %}"></script>
+
+    <script>
+
+        {% setting 'DEFAULT_LANGUAGE' as DEFAULT_LANGUAGE %}
+        {% setting 'LANGUAGES' as LANGUAGES %}
+
+        var DEFAULT_LANGUAGE = '{{ DEFAULT_LANGUAGE.0 }}';
+        var LANGUAGES = [{% for x in LANGUAGES %}['{{x.0}}', '{{ x.1}}'],{% endfor %}];
+
+        document.addEventListener('DOMContentLoaded', function(){
+            new IamheadlessPublisherAdminFormsetController(IamheadlessPublisherAdminLanguageFormset, '.iamheadless-publisher-admin-formset-languages');
+            new IamheadlessPublisherAdminFormsetController(IamheadlessPublisherAdminRelationFormset, '.iamheadless-publisher-admin-formset-relations');
+        });
+
+    </script>
+{% endblock %}

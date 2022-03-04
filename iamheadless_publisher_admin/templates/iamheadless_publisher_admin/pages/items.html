@@ -1,0 +1,114 @@
+{% extends 'iamheadless_publisher_admin/base.html' %}
+
+{% load i18n %}
+{% load iamheadless_publisher_admin_tags %}
+
+{% block content %}
+
+    {% translate 'all' as TEXT_ALL %}
+    {% translate 'clear' as TEXT_CLEAR %}
+    {% translate 'create new item' as TEXT_CREATE_NEW_ITEM %}
+    {% translate 'created at' as TEXT_CREATED_AT %}
+    {% translate 'filter' as TEXT_FILTER %}
+    {% translate 'found' as TEXT_FOUND %}
+    {% translate 'item types' as TEXT_ITEM_TYPES %}
+    {% translate 'keyword' as TEXT_KEYWORD %}
+    {% translate 'none' as TEXT_NONE %}
+    {% translate 'status' as TEXT_STATUS %}
+    {% translate 'tenants' as TEXT_TENANTS %}
+
+    {% setting 'URLNAME_ITEM_CREATE_STEP_ONE' as URLNAME_ITEM_CREATE_STEP_ONE %}
+
+    <div class="container-fluid iamheadless-publisher-admin-jumboheader margin-bottom-lg">
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                        {% include 'iamheadless_publisher_admin/components/headings/default.html' with TITLE=page.title SUBTITLE=page.sub_title %}
+                        <div class="row margin-bottom-lg hidden-lg hidden-md hidden-sm"></div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                        <ul class="text-right">
+                            <li><a href="{% url URLNAME_ITEM_CREATE_STEP_ONE project_id=request_kwargs.project_id %}">{{ TEXT_CREATE_NEW_ITEM|capfirst }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <form action="{{ request.path }}" method="GET">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <label for="filter_keyword">{{ TEXT_KEYWORD|capfirst }}</label>
+                                <input type="text" name="q" id="filter_keyword" class="form-control input-lg" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="filter_item_type">{{ TEXT_ITEM_TYPES|capfirst }}</label>
+                                <select name="item_type" id="filter_item_type" class="form-control input-lg">
+                                    <option value="">{{ TEXT_ALL|capfirst }}</option>
+                                    {% for choice in choices.item_types %}
+                                        <option value="{{ choice.0 }}" {% if choice.0 in request.GET.item_type %}selected{% endif %}>{{ choice.1|capfirst }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="filter_tenant">{{ TEXT_TENANTS|capfirst }}</label>
+                                <select name="tenant" id="filter_tenant" class="form-control input-lg">
+                                    <option value="">{{ TEXT_ALL|capfirst }}</option>
+                                    {% for choice in choices.tenants %}
+                                        <option value="{{ choice.0 }}" {% if choice.0 in request.GET.tenants %}selected{% endif %}>{{ choice.1|capfirst }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label for="filter_statuses">{{ TEXT_STATUS|capfirst }}</label>
+                                <select name="status" id="filter_statuses" class="form-control input-lg">
+                                    <option value="">{{ TEXT_NONE|capfirst }}</option>
+                                    {% for choice in choices.statuses %}
+                                        <option value="{{ choice.0 }}" {% if choice.0 in request.GET.statuses %}selected{% endif %}>{{ choice.1|capfirst }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="form-group">
+                                <a href="{{ request.path }}" class="btn btn-lg btn-danger pull-right">{{ TEXT_CLEAR|capfirst }}</a>
+                                <button class="btn btn-success btn-lg">{{ TEXT_FILTER|capfirst }}</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container margin-bottom-lg">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-md">
+                <h2>{{ TEXT_FOUND|capfirst }}: {{ pagination.total }}</h2>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ul class="iamheadless-publisher-admin-list">
+                    {% for result in results %}
+                        <li>
+                            <a href="{{ result.EDIT_URL }}">{{ result.TITLE|default:None }}</a><br />
+                            <small>{{ result.ITEM_TYPE|capfirst }}; {{ TEXT_CREATED_AT|capfirst }}: {{ result.created_at|date:'d/m/Y H:i' }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                {% include 'iamheadless_publisher_admin/components/pagination/default.html' with PAGE=1 PAGES=1 PREVIOUS_URL=None NEXT_URL=None %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

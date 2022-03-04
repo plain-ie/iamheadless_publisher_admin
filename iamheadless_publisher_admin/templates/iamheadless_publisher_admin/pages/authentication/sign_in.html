@@ -1,0 +1,64 @@
+{% extends 'iamheadless_publisher_admin/base.html' %}
+
+{% load i18n %}
+{% load iamheadless_publisher_admin_tags %}
+
+{% block content %}
+
+    {% setting 'URLNAME_REQUEST_PASSWORD_RESET_LINK' as URLNAME_REQUEST_PASSWORD_RESET_LINK %}
+
+    {% translate 'email' as TEXT_EMAIL %}
+    {% translate 'password' as TEXT_PASSWORD %}
+    {% translate 'sign in' as TEXT_SIGN_IN %}
+    {% translate 'forgot password' as TEXT_FORGOT_PASSWORD %}
+
+    <div class="container margin-top-lg">
+        <div class="row margin-bottom-lg">
+            <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                {% include 'iamheadless_publisher_admin/components/headings/default.html' with TITLE=page.title SUBTITLE=page.sub_title %}
+            </div>
+        </div>
+        {% if messages|length != 0 %}
+            <div class="row margin-bottom-lg">
+                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                    {% include 'iamheadless_publisher_admin/components/alerts/alerts.html' with MESSAGES=messages %}
+                </div>
+            </div>
+        {% endif %}
+        <div class="row margin-bottom-md">
+            <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                <form action="{{ request.path }}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.GET.next }}" />
+                    <div class="form-group">
+                        <label for="email">{{ TEXT_EMAIL|capfirst }}</label>
+                        <input type="email" name="email" id="email" class="form-control input-lg" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">{{ TEXT_PASSWORD|capfirst }}</label>
+                        <input type="password" name="password" id="password" class="form-control input-lg" />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-success btn-lg">
+                            {{ TEXT_SIGN_IN|capfirst }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row margin-bottom-md">
+            <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                {% include 'iamheadless_publisher_admin/components/or_divider.html' %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                <ul class="text-center iamheadless-publisher-admin-list">
+                    <li>
+                        <a href="{% url URLNAME_REQUEST_PASSWORD_RESET_LINK %}">{{ TEXT_FORGOT_PASSWORD|capfirst }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

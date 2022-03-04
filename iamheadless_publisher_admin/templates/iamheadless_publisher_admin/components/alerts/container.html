@@ -1,0 +1,5 @@
+{% if MESSAGES %}
+    <div class="container margin-bottom-lg">
+        {% include 'iamheadless_publisher_admin/components/alerts/alert.html' with MESSAGES=MESSAGES %}
+    </div>
+{% endif %}

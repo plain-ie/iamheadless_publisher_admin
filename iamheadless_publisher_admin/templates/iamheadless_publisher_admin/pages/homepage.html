@@ -1,0 +1,52 @@
+{% extends 'iamheadless_publisher_admin/base.html' %}
+
+{% load i18n %}
+
+{% block content %}
+
+    {% translate 'created at' as TEXT_CREATED_AT %}
+    {% translate 'recent items' as TEXT_RECENT_ITEMS %}
+
+    <div class="container-fluid iamheadless-publisher-admin-jumboheader margin-bottom-lg">
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        {% include 'iamheadless_publisher_admin/components/headings/default.html' with TITLE=page.title SUBTITLE=page.sub_title %}
+                    </div>
+                </div>
+                <div class="row">
+                    {% for stat in stats %}
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body {% if forloop.last is True %}text-right{% endif %}">
+                                    {{ stat.title }}<br />
+                                    {{ stat.value }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container margin-bottom-lg">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-md">
+                <h2>{{ TEXT_RECENT_ITEMS|capfirst }}</h2>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <ul class="iamheadless-publisher-admin-list">
+                    {% for result in results %}
+                        <li>
+                            <a href="{{ result.EDIT_URL }}">{{ result.TITLE|default:None }}</a><br />
+                            <small>{{ result.ITEM_TYPE|capfirst }}; {{ TEXT_CREATED_AT|capfirst }}: {{ result.created_at|date:'d/m/Y H:i' }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

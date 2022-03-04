@@ -1,0 +1,7 @@
+<h1>
+    {{ TITLE|capfirst }}
+    {% if SUBTITLE|default:None is not None %}
+        <br />
+        <small>{{ SUBTITLE|capfirst }}</small>
+    {% endif %}
+</h1>
