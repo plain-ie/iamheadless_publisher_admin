@@ -1,6 +1,6 @@
 from django.conf import settings as dj_settings
 
-from .apps import IamheadlessPublisherAdminConfig
+from .apps import IamheadlessPublisherAdminConfig as AppConfig
 from .loader import load
 
 
@@ -9,7 +9,7 @@ class Settings:
     _API_CLIENT = None
     _ITEM_TYPE_REGISTRY = None
 
-    APP_NAME = IamheadlessPublisherAdminConfig.name
+    APP_NAME = AppConfig.name
     VAR_PREFIX = APP_NAME.upper()
 
     VAR_ALLOWED_PROJECT_IDS = f'{VAR_PREFIX}_ALLOWED_PROJECT_IDS'
@@ -47,7 +47,7 @@ class Settings:
         client = getattr(
             dj_settings,
             self.VAR_API_CLIENT,
-            'iamheadless_publisher_admin.clients.ModelClient'
+            f'{self.APP_NAME}.clients.ModelClient'
         )
 
         self._API_CLIENT = load(client)()
@@ -71,7 +71,7 @@ class Settings:
         return getattr(
             dj_settings,
             self.VAR_FILE_HANDLING_BACKEND_CLASS,
-            'iamheadless_publisher_admin.file_handling.LocalFileUploadBackend'
+            f'{self.APP_NAME}.file_handling.LocalFileUploadBackend'
         )
 
     @property
@@ -79,7 +79,7 @@ class Settings:
         return getattr(
             dj_settings,
             self.VAR_ITEM_TYPE_REGISTRY_CLASS,
-            'iamheadless_publisher_admin.registry.ItemTypeRegistry'
+            f'{self.APP_NAME}.registry.ItemTypeRegistry'
         )
 
     @property
