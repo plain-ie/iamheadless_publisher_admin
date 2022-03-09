@@ -4,6 +4,9 @@ App to render `iamheadless_publisher` frontend.
 
 ## Installation
 
+Requires `iamheadless_projects`
+Requires `iamheadless_publisher`
+
 1. install package
 2. add `iamheadless_publisher_admin` to `INSTALLED_APPS` in `settings.py`
 3. add `'iamheadless_publisher_admin.middleware.IamheadlessPublisherAdminAuthenticationMiddleware'` to `MIDDLEWARE` in `settings.py`
