@@ -79,7 +79,7 @@ def main_menu(context):
     return {
         'brand_image': None,
         'brand_link': '/',
-        'brand_title': request.META['HTTP_HOST'],
+        'brand_title': settings.PROJECT_TITLE,
         'links': links,
         'request': request,
     }
