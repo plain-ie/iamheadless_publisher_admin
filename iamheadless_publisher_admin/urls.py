@@ -7,11 +7,16 @@ from .viewsets.items import ItemListViewSet
 from .viewsets.homepage import DashboardViewSet, HomepageViewSet
 from .viewsets.projects import ProjectsViewSet
 
+from iamheadless_readablility.viewsets import ReadabilityViewSet
+
 
 URL_PREFIX = 'cms/'
 
 
 urlpatterns = [
+
+    # --- Items Delete ---
+    path(rf'{URL_PREFIX}tools/text-analyzer/', ReadabilityViewSet.as_view(), name=settings.URLNAME_READABILITY_TEXT_ANALYZE),
 
     # --- Items Delete ---
     path(rf'{URL_PREFIX}projects/<str:project_id>/tenants/<str:tenant_id>/item-types/<str:item_type>/items/<str:item_id>/delete/', ItemDeleteViewSet.as_view(), name=settings.URLNAME_ITEM_DELETE),

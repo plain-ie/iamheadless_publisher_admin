@@ -33,6 +33,7 @@ class Settings:
     URLNAME_ITEM = 'admin-edit-items'
     URLNAME_ITEMS = 'admin-list-items'
     URLNAME_PROJECTS = 'admin-projects'
+    URLNAME_READABILITY_TEXT_ANALYZE = 'text-analyzer'
     URLNAME_REQUEST_PASSWORD_RESET_LINK = 'admin-request-password-reset-link'
     URLNAME_RESET_PASSWORD = 'admin-reset-password'
     URLNAME_SIGN_IN = 'admin-sign-in'
