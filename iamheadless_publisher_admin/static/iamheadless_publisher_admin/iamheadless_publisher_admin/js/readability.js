@@ -6,11 +6,18 @@ function ReadableFormField(field){
     this.add_score_listener = function(element){
         var self = this;
         self.field.addEventListener('keyUp', function(e){
-            var score = 0;
-            element.innerHTML = score;
-            if (score > 1){
-                element.className = IAMHEADLESS_READABILITY_FORM_FIELD_SCORE_CLASS_NAME + ' ' + 'hard';
-            };
+            var value = e.target_element.value;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200)
+                var response_data = JSON.parse(xhttp.responseText)
+                var reading_score = response_data.reading_score;
+                var reading_ease = response_data.reading_ease;
+                element.innerHTML = reading_score;
+                element.className = IAMHEADLESS_READABILITY_FORM_FIELD_SCORE_CLASS_NAME + ' ' + reading_ease;
+            }
+            xhttp.open("GET", theUrl, true);
+            xhttp.send({'text': value});
         });
     };
     this.add_score_output_element = function(){
