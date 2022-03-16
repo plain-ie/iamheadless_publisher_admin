@@ -7,7 +7,7 @@ from .viewsets.items import ItemListViewSet
 from .viewsets.homepage import DashboardViewSet, HomepageViewSet
 from .viewsets.projects import ProjectsViewSet
 
-from iamheadless_readablility.viewsets import ReadabilityViewSet
+from iamheadless_readability.viewsets import ReadabilityViewSet
 
 
 URL_PREFIX = 'cms/'
