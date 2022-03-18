@@ -35,11 +35,7 @@ class BaseItemTypeRegistry:
     item_types_list = settings.SERIALIZER_LIST
 
     def __init__(self):
-        self.load()
-
-    def load(self):
-        for serializer_string in self.item_types_list:
-            self.register(serializer_string)
+        pass
 
     def find(self, item_type):
         return self.item_types.get(item_type, None)

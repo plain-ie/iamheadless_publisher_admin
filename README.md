@@ -15,5 +15,5 @@ Requires `iamheadless_publisher`
 6. add `IAMHEADLESS_PUBLISHER_ADMIN_LANGUAGES = (IAMHEADLESS_PUBLISHER_ADMIN_DEFAULT_LANGUAGE, )` to `settings.py`
 7. add `IAMHEADLESS_PUBLISHER_ADMIN_ALLOWED_PROJECT_IDS = []` to `settings.py`
 8. add `IAMHEADLESS_PUBLISHER_ADMIN_PROJECT_TITLE = 'Iamheadless Publisher Admin'` to `settings.py`
-9. add `IAMHEADLESS_PUBLISHER_ADMIN_SERIALIZER_LIST = []` to `settings.py`
+9. add `IAMHEADLESS_PUBLISHER_ADMIN_VIEWSET_LIST = []` to `settings.py`
 10. add `path('', include('iamheadless_publisher_admin.urls'))` to `urlpatterns` in `urls.py`
