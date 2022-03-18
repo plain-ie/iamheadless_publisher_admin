@@ -48,15 +48,20 @@ class ItemListViewSet(
 
         params = getattr(self.request, self.request.method)
         project_id = self.get_project_id()
+        item_types_choices = self.get_item_types_choices()
 
         tenant_ids = params.getlist('tenant', None)
         tenant_ids = list(filter(lambda x: x != '', tenant_ids))
         if len(tenant_ids) == 0:
             tenant_ids = None
 
-        item_types = params.getlist('item_type', None)
-        item_types = list(filter(lambda x: x != '', item_types))
-        if len(item_types) == 0:
+        allowed_item_types = list(map(lambda x: x[0], item_types_choices))
+        requested_item_types = params.getlist('item_type', None)
+        requested_item_types = list(filter(lambda x: x != '', requested_item_types))
+
+        if len(requested_item_types) != 0:
+            item_types = list(set(allowed_item_types).intersection(requested_item_types))
+        else:
             item_types = None
 
         statuses = params.getlist('status', None)
@@ -78,7 +83,6 @@ class ItemListViewSet(
             unpublished=unpublished,
         )
 
-        item_types_choices = self.get_item_types_choices()
         tenants_choices = self.get_tenants_choices()
         statuses = self.get_statuses_choices()
 

@@ -2,6 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, reverse
 
 from .conf import settings
+from . import permissions
 from . import utils
 
 
@@ -98,14 +99,10 @@ def user_has_item_type_access(*args, **kwargs):
             if user is None:
                 raise PermissionDenied('Authentication required')
 
-            user_is_project_admin = user.is_project_admin(project_id)
+            has_access = permissions.user_can_access_item_type(
+                user, project_id, item_type)
 
-            types = settings.ITEM_TYPE_REGISTRY.get_item_types(
-                for_admin=user_is_project_admin,
-                item_types=[item_type, ]
-            )
-
-            if len(types) == 0:
+            if has_access is False:
                 raise PermissionDenied(
                     f'User "{user.id}" does not have access to item type "{item_type}"'
                 )

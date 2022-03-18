@@ -2,7 +2,34 @@ from .conf import settings
 from . import utils
 
 
-class ItemTypeRegistry:
+class BaseViewSetRegistry:
+
+    viewsets_list = settings.VIEWSET_LIST
+
+    def __init__(self):
+        pass
+
+    def get_urlpatterns(self, prefix=''):
+
+        urlpatterns = []
+
+        for viewset in self.viewsets_list:
+
+            if isinstance(viewset, str) is True:
+                viewset = utils.load(viewset)
+
+            item_type = getattr(viewset, 'item_type', None)
+            pydantic_model = getattr(viewset, 'pydantic_model', None)
+
+            if item_type is not None and pydantic_model is not None:
+                settings.ITEM_TYPE_REGISTRY.register(pydantic_model)
+
+            urlpatterns = urlpatterns + viewset.get_urlpatterns(prefix=prefix)
+
+        return urlpatterns
+
+
+class BaseItemTypeRegistry:
 
     item_types = {}
     item_types_list = settings.SERIALIZER_LIST
@@ -17,8 +44,9 @@ class ItemTypeRegistry:
     def find(self, item_type):
         return self.item_types.get(item_type, None)
 
-    def register(self, serializer_string):
-        serializer = utils.load(serializer_string)
+    def register(self, serializer):
+        if isinstance(serializer, str) is True:
+            serializer = utils.load(serializer)
         self.item_types[serializer._item_type] = serializer
 
     def get_item_types(
@@ -49,7 +77,7 @@ class ItemTypeRegistry:
             if for_admin is False and serializer._project_admin_required is True:
                 add = False
 
-            if item_types is not None:
+            if item_types is not None and add is True:
                 if len(item_types) != 0:
                     if serializer._item_type not in item_types:
                         add = False
@@ -77,3 +105,11 @@ class ItemTypeRegistry:
                     results.append(model(**object))
                     break
         return results
+
+
+class ViewSetRegistry(BaseViewSetRegistry):
+    pass
+
+
+class ItemTypeRegistry(BaseItemTypeRegistry):
+    pass
