@@ -1,8 +1,5 @@
 {% load iamheadless_publisher_admin_tags %}
-{% load i18n %}
 {% load static %}
-
-{% translate 'skip to main content' as TEXT_SKIP_TO_MAIN_CONTENT %}
 
 <!doctype html>
 <html lang="en"> <!-- XXXXTODO FIX LANGUAGE -->
@@ -25,7 +22,7 @@
         {% block extra_head_bottom %}{% endblock %}
     </head>
     <body>
-        <a href="#main" class="sr-only sr-only-focusable">{{ TEXT_SKIP_TO_MAIN_CONTENT|capfirst }}</a>
+        <a href="#main" class="sr-only sr-only-focusable">Skip to main content</a>
         {% main_menu %}
         <div role="main" id="main">
             {% block content %}{% endblock %}

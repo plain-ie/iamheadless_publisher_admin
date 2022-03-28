@@ -90,28 +90,35 @@
 
 {% block extra_js %}
 
-    {% translate 'reading score' as TEXT_READING_SCORE %}
+    {% translate 'reading score: ' as TEXT_READING_SCORE %}
 
     <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/languages.js' %}?build_id={% build_id %}"></script>
     <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/formset_app.js' %}?build_id={% build_id %}"></script>
     <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/formset_app_languages.js' %}?build_id={% build_id %}"></script>
     <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/formset_app_relations.js' %}?build_id={% build_id %}"></script>
-    <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/readability.js' %}?build_id={% build_id %}"></script>
+    <script src="{% static 'iamheadless_publisher_admin/iamheadless_publisher_admin/js/text_tools.js' %}?build_id={% build_id %}"></script>
     <script>
 
         {% setting 'DEFAULT_LANGUAGE' as DEFAULT_LANGUAGE %}
         {% setting 'LANGUAGES' as LANGUAGES %}
         {% setting 'URLNAME_READABILITY_TEXT_ANALYZE' as URLNAME_READABILITY_TEXT_ANALYZE %}
 
-        var IAMHEADLESS_READABILITY_FORM_FIELD_SCORE_TRANSLATION = '{{ TEXT_READING_SCORE|capfirst }}';
-        var IAMHEADLESS_READABILITY_TEXT_ANALYZER_URL = '{% url URLNAME_READABILITY_TEXT_ANALYZE %}';
         var DEFAULT_LANGUAGE = '{{ DEFAULT_LANGUAGE.0 }}';
         var LANGUAGES = [{% for x in LANGUAGES %}['{{x.0}}', '{{ x.1}}'],{% endfor %}];
 
-        document.addEventListener('DOMContentLoaded', function(){
+        // var IAMHEADLESS_READABILITY_FORM_FIELD_SCORE_CLASS_NAME = '';
+        var IAMHEADLESS_READABILITY_URL = '{% url URLNAME_READABILITY_TEXT_ANALYZE %}';
+        var IAMHEADLESS_READABILITY_FORM_FIELD_SCORE_TEXT = '{{ TEXT_READING_SCORE|capfirst }}';
+
+        $(document).ready(function(){
+
+            window.language_formset_after_detect_formset_function = function(form_element){
+                new DetectReadableFormFields();
+                new DetectFormSlugFields();
+            };
+
             new IamheadlessPublisherAdminFormsetController(IamheadlessPublisherAdminLanguageFormset, '.iamheadless-publisher-admin-formset-languages');
             new IamheadlessPublisherAdminFormsetController(IamheadlessPublisherAdminRelationFormset, '.iamheadless-publisher-admin-formset-relations');
-            new DetectReadableFormFields("[readability]");
         });
 
     </script>

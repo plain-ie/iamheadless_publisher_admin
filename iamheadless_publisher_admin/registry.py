@@ -32,7 +32,6 @@ class BaseViewSetRegistry:
 class BaseItemTypeRegistry:
 
     item_types = {}
-    item_types_list = settings.SERIALIZER_LIST
 
     def __init__(self):
         pass

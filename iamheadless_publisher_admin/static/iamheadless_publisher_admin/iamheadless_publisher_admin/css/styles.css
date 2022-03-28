@@ -119,3 +119,14 @@ ul.iamheadless-publisher-admin-pagination li a { color: #4C52A8; font-weight: bo
 .iamheadless-publisher-admin-form {}
 .iamheadless-publisher-admin-form h2 { color: #333333; font-weight: bold; }
 .iamheadless-publisher-admin-form h3 { color: #333333; font-weight: bold; margin: 0px; padding: 0px; margin-top: 20px; margin-bottom: 20px; }
+
+.iamheadless_readability_field_readability_score {  }
+.iamheadless_readability_field_readability_score.unset {  }
+.iamheadless_readability_field_readability_score.very_easy { color: #449d44; }
+.iamheadless_readability_field_readability_score.easy { color: #449d44; }
+.iamheadless_readability_field_readability_score.fairly_easy { color: #449d44; }
+.iamheadless_readability_field_readability_score.plain_english { color: #449d44; }
+.iamheadless_readability_field_readability_score.fairly_difficult { color: #d43f3a; }
+.iamheadless_readability_field_readability_score.difficult { color: #d43f3a; }
+.iamheadless_readability_field_readability_score.very_difficult { color: #d43f3a; }
+.iamheadless_readability_field_readability_score.extremely_difficult { color: #d43f3a; }

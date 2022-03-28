@@ -1,3 +1,9 @@
+function language_formset_after_detect_formset_function(form_element){
+    // This is function to run after formset translatable content formset is detected.
+    // Use this function to add custom behavior
+}
+
+
 function IamheadlessPublisherAdminLanguageFormset(element, controller){
     this.element = element;
     this.controller = controller;
@@ -94,6 +100,7 @@ function IamheadlessPublisherAdminLanguageFormset(element, controller){
             var form_elements = self.element.querySelectorAll(self.form_selector);
             for (var i = 0; i < form_elements.length; i++){
                 new self._form(form_elements[i], self);
+                language_formset_after_detect_formset_function(form_elements[i]);
             };
         };
     };
