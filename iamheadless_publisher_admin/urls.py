@@ -34,8 +34,8 @@ urlpatterns = [
     # --- Authentication ---
     path(rf'{settings.URL_PREFIX}authentication/sign-in/', SignInViewSet.as_view(), name=settings.URLNAME_SIGN_IN),
     path(rf'{settings.URL_PREFIX}authentication/sign-out/', SignOutViewSet.as_view(), name=settings.URLNAME_SIGN_OUT),
-    path(rf'{settings.URL_PREFIX}authentication/reset-password/<str:token>/', ResetPasswordViewSet.as_view(), name=settings.URLNAME_RESET_PASSWORD),
-    path(rf'{settings.URL_PREFIX}authentication/reset-password/', RequestPasswordResetLinkViewSet.as_view(), name=settings.URLNAME_REQUEST_PASSWORD_RESET_LINK),
+    # path(rf'{settings.URL_PREFIX}authentication/reset-password/<str:token>/', ResetPasswordViewSet.as_view(), name=settings.URLNAME_RESET_PASSWORD),
+    # path(rf'{settings.URL_PREFIX}authentication/reset-password/', RequestPasswordResetLinkViewSet.as_view(), name=settings.URLNAME_REQUEST_PASSWORD_RESET_LINK),
 
     path(rf'{settings.URL_PREFIX}', HomepageViewSet.as_view(), name=settings.URLNAME_HOMEPAGE),
 
