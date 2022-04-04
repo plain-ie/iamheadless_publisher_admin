@@ -117,6 +117,10 @@ class BaseItemPydanticModel(BaseModel):
     #
 
     @classmethod
+    def viewsets(cls):
+        return []
+
+    @classmethod
     def get_item_type(cls, data):
         return data.get('item_type', None)
 

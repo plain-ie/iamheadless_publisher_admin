@@ -4,8 +4,6 @@ from . import utils
 
 class BaseViewSetRegistry:
 
-    viewsets_list = settings.VIEWSET_LIST
-
     def __init__(self):
         pass
 
@@ -13,7 +11,7 @@ class BaseViewSetRegistry:
 
         urlpatterns = []
 
-        for viewset in self.viewsets_list:
+        for viewset in settings.ITEM_TYPE_REGISTRY.viewsets:
 
             if isinstance(viewset, str) is True:
                 viewset = utils.load(viewset)
@@ -21,10 +19,10 @@ class BaseViewSetRegistry:
             item_type = getattr(viewset, 'item_type', None)
             pydantic_model = getattr(viewset, 'pydantic_model', None)
 
-            if item_type is not None and pydantic_model is not None:
-                settings.ITEM_TYPE_REGISTRY.register(pydantic_model)
+            # if item_type is not None and pydantic_model is not None:
+            #     settings.ITEM_TYPE_REGISTRY.register(pydantic_model)
 
-            urlpatterns = urlpatterns + viewset.get_urlpatterns(prefix=prefix)
+            urlpatterns += viewset.get_urlpatterns(prefix=prefix)
 
         return urlpatterns
 
@@ -34,7 +32,8 @@ class BaseItemTypeRegistry:
     item_types = {}
 
     def __init__(self):
-        pass
+        for x in settings.SERIALIZER_LIST:
+            self.register(x)
 
     def find(self, item_type):
         return self.item_types.get(item_type, None)
@@ -43,6 +42,13 @@ class BaseItemTypeRegistry:
         if isinstance(serializer, str) is True:
             serializer = utils.load(serializer)
         self.item_types[serializer._item_type] = serializer
+
+    @property
+    def viewsets(self):
+        viewsets = []
+        for key in self.item_types.keys():
+            viewsets += self.item_types[key].viewsets()
+        return viewsets
 
     def get_item_types(
             self,

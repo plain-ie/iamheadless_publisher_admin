@@ -37,6 +37,7 @@ function ReadableFormField(field){
         var self = this;
         if (value === undefined || value.length === 0){
             self.set_score(element, 0, 'unset');
+            return;
         };
         $.ajax({
             'url': IAMHEADLESS_READABILITY_URL,

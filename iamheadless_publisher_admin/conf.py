@@ -20,10 +20,10 @@ class Settings:
     VAR_FILE_HANDLING_BACKEND_CLASS = f'{VAR_PREFIX}_FILE_HANDLING_BACKEND_CLASS'
     VAR_ITEM_TYPE_REGISTRY_CLASS = f'{VAR_PREFIX}_ITEM_TYPE_REGISTRY_CLASS'
     VAR_LANGUAGES = f'{VAR_PREFIX}_LANGUAGES'
+    VAR_SERIALIZER_CLASS = f'{VAR_PREFIX}_SERIALIZER_REGISTRY_CLASS'
     VAR_SERIALIZER_LIST = f'{VAR_PREFIX}_SERIALIZER_LIST'
     VAR_PROJECT_TITLE = f'{VAR_PREFIX}_PROJECT_TITLE'
     VAR_URL_PREFIX = f'{VAR_PREFIX}_URL_PREFIX'
-    VAR_VIEWSET_LIST = f'{VAR_PREFIX}_VIEWSET_LIST'
     VAR_VIEWSET_REGISTRY_CLASS = f'{VAR_PREFIX}_VIEWSET_REGISTRY_CLASS'
 
     REQUEST_USER_KEY = 'iamheadless_publisher_admin_user'
@@ -115,15 +115,21 @@ class Settings:
         self._ITEM_TYPE_REGISTRY = load(self.ITEM_TYPE_REGISTRY_CLASS)()
         return self._ITEM_TYPE_REGISTRY
 
+    #
+
+    @property
+    def SERIALIZER_CLASS(self):
+        return getattr(
+            dj_settings,
+            self.VAR_SERIALIZER_CLASS,
+            f'{self.APP_NAME}.registry.ItemTypeRegistry'
+        )
+
     @property
     def SERIALIZER_LIST(self):
         return getattr(dj_settings, self.VAR_SERIALIZER_LIST, [])
 
     #
-
-    @property
-    def VIEWSET_LIST(self):
-        return getattr(dj_settings, self.VAR_VIEWSET_LIST, [])
 
     @property
     def VIEWSET_REGISTRY_CLASS(self):
@@ -140,8 +146,8 @@ class Settings:
         self._VIEWSET_REGISTRY = load(self.VIEWSET_REGISTRY_CLASS)()
         return self._VIEWSET_REGISTRY
 
-    def __getattr__(self, name):
-        return getattr(dj_settings, name)
+    # def __getattr__(self, name):
+    #     return getattr(dj_settings, name)
 
 
 settings = Settings()
