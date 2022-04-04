@@ -29,9 +29,9 @@ setup(
 
     # Dependent packages (distributions)
     install_requires=[
-        "django>=4.0.2",
-        "djantic==0.4.1",
-        "pydantic==1.9.0",
+        # https://github.com/plain-ie/iamheadless_readability/archive/refs/heads/main.zip
+        # 'https://github.com/plain-ie/iamheadless_projects/archive/refs/heads/main.zip',
+        # 'https://github.com/plain-ie/iamheadless_publisher/archive/refs/heads/main.zip',
     ],
 
 )
