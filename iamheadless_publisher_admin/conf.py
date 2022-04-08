@@ -19,6 +19,7 @@ class Settings:
     VAR_DEFAULT_LANGUAGE = f'{VAR_PREFIX}_DEFAULT_LANGUAGE'
     VAR_FILE_HANDLING_BACKEND_CLASS = f'{VAR_PREFIX}_FILE_HANDLING_BACKEND_CLASS'
     VAR_ITEM_TYPE_REGISTRY_CLASS = f'{VAR_PREFIX}_ITEM_TYPE_REGISTRY_CLASS'
+    VAR_ITEMS_LIST_LENGTH = f'{VAR_PREFIX}_ITEMS_LIST_LENGTH'
     VAR_LANGUAGES = f'{VAR_PREFIX}_LANGUAGES'
     VAR_SERIALIZER_CLASS = f'{VAR_PREFIX}_SERIALIZER_REGISTRY_CLASS'
     VAR_SERIALIZER_LIST = f'{VAR_PREFIX}_SERIALIZER_LIST'
@@ -69,6 +70,14 @@ class Settings:
     @property
     def URL_PREFIX(self):
         return getattr(dj_settings, self.VAR_URL_PREFIX, 'cms/')
+
+    @property
+    def ITEMS_LIST_LENGTH(self):
+        return getattr(
+            dj_settings,
+            self.VAR_ITEMS_LIST_LENGTH,
+            10
+        )
 
     #
 

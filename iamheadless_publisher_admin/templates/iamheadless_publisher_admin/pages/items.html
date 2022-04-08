@@ -106,7 +106,7 @@
                 </ul>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                {% include 'iamheadless_publisher_admin/components/pagination/default.html' with PAGE=1 PAGES=1 PREVIOUS_URL=None NEXT_URL=None %}
+                {% include 'iamheadless_publisher_admin/components/pagination/default.html' with PAGE=pagination.page PAGES=pagination.pages PREVIOUS_URL=pagination.previous_url NEXT_URL=pagination.next_url %}
             </div>
         </div>
     </div>

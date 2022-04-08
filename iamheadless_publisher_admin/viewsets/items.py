@@ -1,8 +1,8 @@
 import json
+import re
 
 from django.shortcuts import HttpResponse, render
 from django.utils.decorators import method_decorator
-from django.utils.translation import gettext as _
 from django.views import View
 
 from ..conf import settings
@@ -17,6 +17,8 @@ class ItemListViewSet(
         ):
 
     client = utils.get_client()
+    count = settings.ITEMS_LIST_LENGTH
+    page_param_name = 'page'
 
     template = 'iamheadless_publisher_admin/pages/items.html'
 
@@ -64,6 +66,8 @@ class ItemListViewSet(
         else:
             item_types = None
 
+        page = self.get_page()
+
         statuses = params.getlist('status', None)
 
         published = 'published' in statuses
@@ -81,10 +85,15 @@ class ItemListViewSet(
             token=self.get_request_user_token(),
             published=published,
             unpublished=unpublished,
+            page=int(page),
+            count=self.count,
         )
 
         tenants_choices = self.get_tenants_choices()
         statuses = self.get_statuses_choices()
+
+        page = req['page']
+        pages = req['pages']
 
         return {
             'choices': {
@@ -94,14 +103,14 @@ class ItemListViewSet(
             },
             'form': None,
             'page': {
-                'title': _('Publish items'),
+                'title': 'Publish items',
             },
             'pagination': {
-                'page': req['page'],
-                'pages': req['pages'],
+                'page': page,
+                'pages': pages,
                 'total': req['total'],
-                'next_url': None,
-                'previous_url': None,
+                'next_url': self.get_next_url(pages),
+                'previous_url': self.get_previous_url(),
             },
             'request_kwargs': {
                 'project_id': project_id,
@@ -121,6 +130,46 @@ class ItemListViewSet(
 
     def get_statuses_choices(self):
         return [
-            ['published', _('published')],
-            ['unpublished', _('unpublished')]
+            ['published', 'published'],
+            ['unpublished', 'unpublished']
         ]
+
+    def get_page(self):
+        params = getattr(self.request, self.request.method)
+        page = params.get(self.page_param_name, '1')
+        if page.isdigit() is False:
+            page = '1'
+        return int(page)
+
+    def change_page_in_url(self, page):
+
+        prefix = '?'
+        url = self.request.build_absolute_uri()
+
+        if prefix in url:
+            prefix = '&'
+
+        if f'{self.page_param_name}=' not in url:
+            url = url + prefix + f'{self.page_param_name}=1'
+
+        url = re.sub(
+            rf'{self.page_param_name}\=[0-9]*',
+            f'{self.page_param_name}={page}',
+            url
+        )
+
+        return url
+
+    def get_next_url(self, pages):
+        page = self.get_page()
+        if page < pages:
+            next_page = page + 1
+            return self.change_page_in_url(next_page)
+        return None
+
+    def get_previous_url(self):
+        page = self.get_page()
+        if page > 1:
+            previous_page = page - 1
+            return self.change_page_in_url(previous_page)
+        return None
