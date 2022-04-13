@@ -18,6 +18,9 @@ class Settings:
     VAR_API_URL = f'{VAR_PREFIX}_API_URL'
     VAR_DEFAULT_LANGUAGE = f'{VAR_PREFIX}_DEFAULT_LANGUAGE'
     VAR_FILE_HANDLING_BACKEND_CLASS = f'{VAR_PREFIX}_FILE_HANDLING_BACKEND_CLASS'
+    VAR_HANDLER_403 = f'{VAR_PREFIX}_HANDLER_403'
+    VAR_HANDLER_404 = f'{VAR_PREFIX}_HANDLER_404'
+    VAR_HANDLER_500 = f'{VAR_PREFIX}_HANDLER_500'
     VAR_ITEM_TYPE_REGISTRY_CLASS = f'{VAR_PREFIX}_ITEM_TYPE_REGISTRY_CLASS'
     VAR_ITEMS_LIST_LENGTH = f'{VAR_PREFIX}_ITEMS_LIST_LENGTH'
     VAR_LANGUAGES = f'{VAR_PREFIX}_LANGUAGES'
@@ -77,6 +80,32 @@ class Settings:
             dj_settings,
             self.VAR_ITEMS_LIST_LENGTH,
             10
+        )
+
+    #
+
+    @property
+    def HANDLER_403(self):
+        return getattr(
+            dj_settings,
+            self.VAR_HANDLER_403,
+            'iamheadless_publisher_admin.viewsets.error_handling.handler403'
+        )
+
+    @property
+    def HANDLER_404(self):
+        return getattr(
+            dj_settings,
+            self.VAR_HANDLER_404,
+            'iamheadless_publisher_admin.viewsets.error_handling.handler404'
+        )
+
+    @property
+    def HANDLER_500(self):
+        return getattr(
+            dj_settings,
+            self.VAR_HANDLER_500,
+            'iamheadless_publisher_admin.viewsets.error_handling.handler500'
         )
 
     #
