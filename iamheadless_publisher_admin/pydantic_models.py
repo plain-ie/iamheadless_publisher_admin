@@ -121,6 +121,10 @@ class BaseItemPydanticModel(BaseModel):
         return []
 
     @classmethod
+    def get_id(cls, data):
+        return data.get('id', None)
+
+    @classmethod
     def get_item_type(cls, data):
         return data.get('item_type', None)
 

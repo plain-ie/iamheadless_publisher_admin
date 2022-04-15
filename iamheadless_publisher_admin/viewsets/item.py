@@ -222,8 +222,8 @@ class ItemCreationWorkFlowStepThree(
         if tenant_id is not None:
 
             tenant = self.get_client().project_tenant(
-                tenant_id,
                 project_id,
+                tenant_id,
             )
 
             if tenant is None:
