@@ -222,6 +222,7 @@ class ModelClient(BaseClient):
             ):
 
         from iamheadless_publisher.lookups.items_retrieve import retrieve_items as publisher_retrieve_items
+        from iamheadless_publisher.pydantic_models import NestedItemSchema
 
         data = publisher_retrieve_items(
             count=count,
@@ -233,6 +234,7 @@ class ModelClient(BaseClient):
             tenant_ids=tenant_id,
             unpublished=unpublished,
             format='dict',
+            item_pydantic_model=NestedItemSchema,
         )
 
         # data = json.loads(data)
@@ -286,8 +288,14 @@ class ModelClient(BaseClient):
             ):
 
         from iamheadless_publisher.lookups.item_retrieve import retrieve_item as publisher_retrieve_item
+        from iamheadless_publisher.pydantic_models import ItemSchema, NestedItemSchema
 
-        instance = publisher_retrieve_item(item_id, format='dict')
+        instance = publisher_retrieve_item(
+            item_id,
+            format='dict',
+            item_pydantic_model=ItemSchema,
+            nested_item_pydantic_model=NestedItemSchema,
+        )
 
         return instance
 
